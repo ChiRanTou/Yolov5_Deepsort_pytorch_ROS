@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <!-- Camera topic and weights, config and classes files -->
+    <arg name="image_topic"	                default="/rgb/image_raw"/>
+    <arg name="weights_name"	            default="yolov5/weights/yolov5s.pt"/>
+    <arg name="config_path"                 default="configs/deep_sort.yaml"/>
+
+    <!-- Published topics -->
+    <arg name="publish_image"	            default="true"/>
+    <arg name="tracked_objects_topic"      default="tracked_objects_bbox"/>
+    <arg name="tracked_image_topic"      default="tracked_objects_image"/>
+
+    <!-- Detection confidence -->
+    <arg name="confidence"                  default="0.25"/>
+    <arg name="iou_thres"                      default="0.45"/>
+    <!-- if you don't have GPU input cpu -->
+    <arg name="gpu_id"                      default="0"/>
+    <arg name="class_name"                  default='person'/>
+
+    <!-- Node -->
+    <node name="tracker_node" pkg="deepsort_yolov5" type="tracker.py" output="screen" respawn="true">
+        <param name="image_topic"               value="$(arg image_topic)"/>
+        <param name="weights_name"              value="$(arg weights_name)"/>
+        <param name="publish_image"             value="$(arg publish_image)"/>
+        <param name="tracked_objects_topic"     value="$(arg tracked_objects_topic)"/>
+        <param name="tracked_image_topic"       value="$(arg tracked_image_topic)"/>
+        <param name="confidence"                value="$(arg confidence)"/>
+        <param name="iou_thres"                 value="$(arg iou_thres)"/>
+        <param name="gpu_id"                    value="$(arg gpu_id)"/>
+        <param name="class_name"                value="$(arg class_name)"/>
+        <param name="config_path"               value="$(arg config_path)"/>
+    </node>
+</launch>
