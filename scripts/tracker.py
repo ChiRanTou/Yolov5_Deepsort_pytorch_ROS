@@ -127,8 +127,11 @@ class DeepsortTracker():
 
             if len(outputs) > 0:
                 bbox_xyxy = outputs[:, :4]
-                identities = outputs[:, -1]
-                confidence = outputs[:, -2]
+                identities = outputs[:, 4]
+                xc = outputs[:, 5]
+                yc = outputs[:, 6]
+                vx = outputs[:, 7]
+                vy = outputs[:, 8]
                 offset = (0, 0)
                 for i, box in enumerate(bbox_xyxy):
                     xmin, ymin, xmax, ymax = [int(i) for i in box]
@@ -144,9 +147,13 @@ class DeepsortTracker():
                     detection_msg.xmax = xmax
                     detection_msg.ymin = ymin
                     detection_msg.ymax = ymax
-                    detection_msg.probability = float(confidence[i])
-                    detection_msg.Class = self.names[int(clss[i-1].item())] + '_' + str(id)
-                    # detection_msg.Class = str(id)
+                    detection_msg.xc = int(xc[i])
+                    detection_msg.yc = int(yc[i])
+                    detection_msg.vx = int(vx[i])
+                    detection_msg.vy = int(vy[i])
+                    detection_msg.probability = float(confs[i-1])
+                    # detection_msg.Class = self.names[int(clss[i-1].item())] + '_' + str(id)
+                    detection_msg.Class = str(id)
                     detection_msg.id = id
 
                     # print(detection_msg.xmin, detection_msg.xmax, detection_msg.ymin, detection_msg.ymax,

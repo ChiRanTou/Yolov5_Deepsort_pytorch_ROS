@@ -109,6 +109,14 @@ class Track:
         ret = self.to_tlwh()
         ret[2:] = ret[:2] + ret[2:]
         return ret
+    
+    def get_mean_value(self):
+        """Get mean value of the track state."""
+        xc = self.mean[0]
+        yc = self.mean[1]
+        vx = self.mean[4]
+        vy = self.mean[5]
+        return xc,yc,vx,vy
 
     def predict(self, kf):
         """Propagate the state distribution to the current time step using a
